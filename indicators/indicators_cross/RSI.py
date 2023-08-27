@@ -16,6 +16,8 @@ dateColumn = 'Date'
 
 RSI_Window = 14
 
+rsi_signal = []
+
 
 def calc_rsi():
     global df
@@ -30,7 +32,7 @@ def calc_rsi():
     prices = df[closeColumn]
     buy_price = []
     sell_price = []
-    rsi_signal = []
+    global rsi_signal
     signal = 0
 
     for i in range(len(rsi)):
@@ -78,13 +80,9 @@ def plot_crossover():
 
     ax1 = plt.subplot2grid((10, 1), (0, 0), rowspan=4, colspan=1)
     ax2 = plt.subplot2grid((10, 1), (5, 0), rowspan=4, colspan=1)
-    # ax1.plot(df[closeColumn], linewidth=2.5)
+
     ax1.set_title('BTC CLOSE PRICE')
-    # ax2.plot(df['rsi'], color='orange', linewidth=2.5)
-    # ax2.axhline(30, linestyle='--', linewidth=1.5, color='grey')
-    # ax2.axhline(70, linestyle='--', linewidth=1.5, color='grey')
     ax2.set_title('BTC RELATIVE STRENGTH INDEX')
-    # plt.show()
 
     ax1 = plt.subplot2grid((10, 1), (0, 0), rowspan=4, colspan=1)
     ax2 = plt.subplot2grid((10, 1), (5, 0), rowspan=4, colspan=1)
@@ -100,6 +98,7 @@ def plot_crossover():
     plt.show()
 
     position = []
+    global rsi_signal
     for i in range(len(rsi_signal)):
         if rsi_signal[i] > 1:
             position.append(0)
@@ -121,38 +120,6 @@ def plot_crossover():
     position = pd.DataFrame(position).rename(
         columns={0: 'rsi_position'}).set_index(df.index)
 
-    # frames = [close_price, rsi, rsi_signal, position]
-    # strategy = pd.concat(frames, join='inner', axis=1)
-
-    # print(strategy.head())
-
-    # BTC_ret = pd.DataFrame(np.diff(df[closeColumn])).rename(columns={0: 'returns'})
-    # rsi_strategy_ret = []
-
-    # for i in range(len(BTC_ret)):
-    #     returns = BTC_ret['returns'][i]*strategy['rsi_position'][i]
-    #     rsi_strategy_ret.append(returns)
-
-    # rsi_strategy_ret_df = pd.DataFrame(
-    #     rsi_strategy_ret).rename(columns={0: 'rsi_returns'})
-    # investment_value = 100000
-    # number_of_stocks = floor(investment_value/df[closeColumn][-1])
-    # rsi_investment_ret = []
-
-    # for i in range(len(rsi_strategy_ret_df['rsi_returns'])):
-    #     returns = number_of_stocks*rsi_strategy_ret_df['rsi_returns'][i]
-    #     rsi_investment_ret.append(returns)
-
-    # rsi_investment_ret_df = pd.DataFrame(rsi_investment_ret).rename(
-    #     columns={0: 'investment_returns'})
-    # total_investment_ret = round(
-    #     sum(rsi_investment_ret_df['investment_returns']), 2)
-    # profit_percentage = floor((total_investment_ret/investment_value)*100)
-    # print(cl('Profit gained from the RSI strategy by investing $100k in BTC : {}'.format(
-    #     total_investment_ret), attrs=['bold']))
-    # print(cl('Profit percentage of the RSI strategy : {}%'.format(
-    #     profit_percentage), attrs=['bold']))
-
 
 def check_file():
     try:
@@ -169,9 +136,9 @@ def check_file():
 
 
 def save_csv(df):
-    # df.drop('d_ema_10', inplace=True, axis=1)
-    # df.drop('d_ema_20', inplace=True, axis=1)
-    # df.drop('10_above_20', inplace=True, axis=1)
+    df.drop('buy_price', inplace=True, axis=1)
+    df.drop('sell_price', inplace=True, axis=1)
+    df.drop('rsi', inplace=True, axis=1)
     df.to_csv(FILENAME)
 
 
@@ -197,4 +164,4 @@ if __name__ == '__main__':
         print("Error reading data")
     calc_rsi()
     plot_crossover()
-    # save_csv(df)
+    save_csv(df)
