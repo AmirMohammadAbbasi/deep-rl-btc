@@ -14,18 +14,19 @@ def calc_ema():
     global df
     print(df.tail(2))
     print(df.shape)
-    print(list(df.columns.values))
-    print(df[closeColumn])
+    # print(list(df.columns.values))
+    # print(df[closeColumn])
 
     df['d_ema_10']=pta.ema(df[closeColumn], length = 10)
     df['d_ema_20']=pta.ema(df[closeColumn], length = 20)
     df['10_above_20'] = (df["d_ema_10"] >= df["d_ema_20"]).astype(int)
-    df['10_20_co'] = df['10_above_20'].diff().astype('Int64')
+    df['SMA_10_20'] = df['10_above_20'].diff().astype('Int64')
     print(df.tail(5))
-    print("Bullish crossovers")
-    print(df.loc[df['10_20_co'] == 1])
-    print("Bearish crossovers")
-    print(df.loc[df['10_20_co'] == -1])
+    # print("Bullish crossovers")
+    # print(df.loc[df['10_20_co'] == 1])
+    # print("Bearish crossovers")
+    # print(df.loc[df['10_20_co'] == -1])
+
 
 def plot_crossover():
     global df
@@ -47,6 +48,8 @@ def plot_crossover():
     plt.title('BTC Moving Averages (10, 20)')
     plt.legend(loc = 'upper left')
     plt.show()
+    
+
 
 def check_file():
     try:
@@ -60,6 +63,13 @@ def check_file():
         print("Error reading data fromx CSV")
         print(e)
     return False
+
+
+def save_csv(df):
+    df.drop('d_ema_10', inplace=True, axis=1)
+    df.drop('d_ema_20', inplace=True, axis=1)
+    df.drop('10_above_20', inplace=True, axis=1)
+    df.to_csv(FILENAME)
 
 def read_eod_data():
     global df
@@ -82,3 +92,4 @@ if __name__ == '__main__':
         print("Error reading data")
     calc_ema()
     plot_crossover()
+    save_csv(df)
