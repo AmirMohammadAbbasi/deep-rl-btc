@@ -4,7 +4,15 @@ import pandas_ta as pta
 import traceback
 import matplotlib.pyplot as plt
 
-FILENAME="./BTC-USD-1d-period-2023-08-27.csv"
+from configparser import ConfigParser
+
+# Read config.ini file
+config_object = ConfigParser()
+config_object.read("config.ini")
+
+tickerInfo = config_object["TICKERINFO"]
+FILENAME = tickerInfo["path"]
+
 df = None
 
 closeColumn = 'Close'
@@ -14,18 +22,13 @@ def calc_sma():
     global df
     print(df.tail(2))
     print(df.shape)
-    # print(list(df.columns.values))
-    # print(df[closeColumn])
+
 
     df['d_sma_10']=pta.sma(df[closeColumn], length = 10)
     df['d_sma_20']=pta.sma(df[closeColumn], length = 20)
     df['10_above_20'] = (df["d_sma_10"] >= df["d_sma_20"]).astype(int)
     df['sma_10_20'] = df['10_above_20'].diff().astype('Int64')
     print(df.tail(5))
-    # print("Bullish crossovers")
-    # print(df.loc[df['sma_10_20'] == 1])
-    # print("Bearish crossovers")
-    # print(df.loc[df['sma_10_20'] == -1])
 
 
 def plot_crossover():

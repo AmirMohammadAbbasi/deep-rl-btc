@@ -22,18 +22,12 @@ def calc_ema():
     global df
     print(df.tail(2))
     print(df.shape)
-    # print(list(df.columns.values))
-    # print(df[closeColumn])
 
     df['d_ema_10']=pta.ema(df[closeColumn], length = 10)
     df['d_ema_20']=pta.ema(df[closeColumn], length = 20)
     df['10_above_20'] = (df["d_ema_10"] >= df["d_ema_20"]).astype(int)
     df['ema_10_20'] = df['10_above_20'].diff().astype('Int64')
     print(df.head(5))
-    # print("Bullish crossovers")
-    # print(df.loc[df['ema_10_20'] == 1])
-    # print("Bearish crossovers")
-    # print(df.loc[df['ema_10_20'] == -1])
 
 
 def plot_crossover():
