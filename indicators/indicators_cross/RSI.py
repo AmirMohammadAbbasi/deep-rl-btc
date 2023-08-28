@@ -8,7 +8,15 @@ import pandas_ta as pta
 import traceback
 import matplotlib.pyplot as plt
 
-FILENAME = "./BTC-USD-1d-period-2023-08-27.csv"
+from configparser import ConfigParser
+
+# Read config.ini file
+config_object = ConfigParser()
+config_object.read("config.ini")
+
+tickerInfo = config_object["TICKERINFO"]
+FILENAME = tickerInfo["path"]
+
 df = None
 
 closeColumn = 'Close'
@@ -26,7 +34,13 @@ def calc_rsi():
     # print(list(df.columns.values))
     # print(df[closeColumn])
 
-    df['rsi'] = pta.rsi(df[closeColumn], length=RSI_Window)
+    df['rsi'] = pta.rsi(df[closeColumn], length=RSI_Window).fillna(50)
+    print(df['rsi'])
+
+    df['rsi_area'] = 0
+
+    df['rsi_area'] = np.where(df['rsi'] > 70, -1, df['rsi_area'])
+    df['rsi_area'] = np.where(df['rsi'] < 30 , 1, df['rsi_area'])
 
     rsi = df['rsi']
     prices = df[closeColumn]
