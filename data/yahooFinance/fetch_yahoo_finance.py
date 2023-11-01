@@ -15,7 +15,7 @@ config_object.read("config.ini")
 tickerInfo = config_object["TICKERINFO"]
 
 tickers = tickerInfo['name']
-period = tickerInfo['period']
+# period = tickerInfo['period']
 interval = tickerInfo['interval']
 
 start = tickerInfo['fromDate']
