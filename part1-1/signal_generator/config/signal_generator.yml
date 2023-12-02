@@ -1,0 +1,34 @@
+start_date: '2022-09-01T00:00:00.000000'
+end_date: '2022-12-01T00:00:00.000000'
+
+market: 'BTCUSDT'
+time_frame: '1H' #  minute == 10min, hour == 2H, day == 1d, month == 1M
+
+# Indicators
+# RSI
+rsi_length: 14
+rsi_upper_band: 70
+rsi_lower_band: 30
+
+# MACD
+fast_length: 26
+slow_length: 12
+
+# Stoch
+k: 14
+d: 3
+smoth: 3
+stoch_upper_band: 80
+stoch_lower_band: 20
+
+# ADX
+adx_length: 14
+adx_thr: 25
+
+# EMA_Cross
+ema_short_length: 5
+ema_long_length: 10
+
+# Ichi
+tenkan: 9
+kijun: 26
