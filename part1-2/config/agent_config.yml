@@ -1,0 +1,11 @@
+action_size: 3
+batch_size: 64
+train_size: 1000
+gamma: 0.95
+epsilon_greedy: True
+epsilon: 0.5
+epsilon_max: 1.0
+epsilon_min: 0.01
+lr: 0.01
+open_fee: 0.004
+close_fee: 0.004
