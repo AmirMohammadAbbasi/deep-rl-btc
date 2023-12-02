@@ -1,0 +1,14 @@
+phase: 'train' # "train or test"
+initial_money: 10000
+window_size: 24
+iterations: 30
+
+create_data: True  # True or False
+
+voting_list: [adx_signals_train,
+              ema_cross_signals_train,
+              ichimoku_signals_train,
+              macd_signals_train,
+              rsi_signals_train,
+              stoch_signals_train]
+name_data: BTCUSDT-1H_train
